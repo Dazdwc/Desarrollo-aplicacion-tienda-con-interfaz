@@ -9,7 +9,7 @@ import ElEscuadronDeLasConsultas.Modelo.ClienteStandar;
 public class ClienteStandarTest {
 
     @Test
-    void testTipoCliente() {
+    void tipoClienteTest() {
         ClienteStandar cliente = new ClienteStandar("jdoe@example.com", "John Doe", "12345678A", "123 Main Street");
         assertEquals("Standar", cliente.tipoCliente());
     }
