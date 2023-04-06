@@ -11,7 +11,7 @@ public class ClientePremium extends Cliente {
         this.descuento = descuentoEnv();
         this.cuota = calcAnual();
     }
-
+//getters and setters
     public double getDescuento() {
         return descuento;
     }

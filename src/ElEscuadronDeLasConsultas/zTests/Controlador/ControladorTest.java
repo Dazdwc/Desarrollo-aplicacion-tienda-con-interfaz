@@ -1,12 +1,8 @@
-package ElEscuadronDeLasConsultas.Tests.Controlador;
+package ElEscuadronDeLasConsultas.zTests.Controlador;
 
 
 import ElEscuadronDeLasConsultas.Modelo.*;
 import org.junit.jupiter.api.Test;
-
-import java.text.DecimalFormat;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 

@@ -1,4 +1,4 @@
-package ElEscuadronDeLasConsultas.Tests.Modelo;
+package ElEscuadronDeLasConsultas.zTests.Modelo;
 import ElEscuadronDeLasConsultas.Modelo.*;
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.BeforeEach;

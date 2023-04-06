@@ -17,7 +17,6 @@ public class Pedido {
     public Pedido(int numeroPedido, int cantidad, Articulo articulo, Cliente cliente) {
         this.numeroPedido = numeroPedido;
         this.cantidad = cantidad;
-        this.fechaHora = fechaHora;
         this.articulo = articulo;
         this.cliente = cliente;
     }

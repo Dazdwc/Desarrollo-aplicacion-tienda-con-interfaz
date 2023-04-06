@@ -1,4 +1,4 @@
-package ElEscuadronDeLasConsultas.Tests.Modelo;
+package ElEscuadronDeLasConsultas.zTests.Modelo;
 
 import ElEscuadronDeLasConsultas.Modelo.Articulo;
 import ElEscuadronDeLasConsultas.Modelo.ClientePremium;

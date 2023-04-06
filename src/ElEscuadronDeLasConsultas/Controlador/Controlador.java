@@ -1,14 +1,11 @@
 package ElEscuadronDeLasConsultas.Controlador;
-
 import ElEscuadronDeLasConsultas.Modelo.*;
-
 import java.util.Scanner;
 
 public class Controlador {
 
     private Datos datos;
     Scanner teclado = new Scanner(System.in);
-
     public Controlador() {
         datos = new Datos();
     }
@@ -31,7 +28,7 @@ public class Controlador {
         datos.getListaArticulo().add(articulo);
         System.out.println("Artículo creado exitosamente.");
         System.out.println("\nEl Articulo creado contiene los siguientes datos:");
-        System.out.println(articulo.toString());
+        System.out.println(articulo);
     }
 
 
@@ -74,7 +71,7 @@ public class Controlador {
             }
             datos.getListaCliente().add(cliente);
             System.out.println("El Cliente creado contiene los siguientes datos:");
-            System.out.println(cliente.toString());
+            System.out.println(cliente);
         } else {
             System.out.println("Este Mail ya existe.");
         }
@@ -89,9 +86,9 @@ public class Controlador {
             for (Cliente cliente : listaCliente.getArrayList()) {
                 if (cliente.tipoCliente() == "Standar") {
 
-                    System.out.println(cliente.toString());
+                    System.out.println(cliente);
                 } else {
-                    System.out.println(cliente.toString());
+                    System.out.println(cliente);
                 }
             }
         }
@@ -107,7 +104,7 @@ public class Controlador {
             for (Cliente cliente : listaCliente.getArrayList()) {
                 if(cliente.tipoCliente() == "Standar"){
 
-                    System.out.println(cliente.toString());}
+                    System.out.println(cliente);}
             }
         }
     }
@@ -120,7 +117,7 @@ public class Controlador {
             for (Cliente cliente : listaCliente.getArrayList()) {
                 if(cliente.tipoCliente() == "Premium"){
 
-                    System.out.println(cliente.toString());}
+                    System.out.println(cliente);}
             }
         }
     }
@@ -149,20 +146,30 @@ public class Controlador {
             Cliente cliente = listaCliente.obtenerClientePorMail(mail);
 
             if (cliente == null) {
-                System.out.println("Cliente no encontrado, añada sus datos");
-                addCliente();
-                listaCliente = datos.getListaCliente();
-                cliente = listaCliente.obtenerClientePorMail(mail);
-                datos.setListaCliente(listaCliente);
-            }
 
-            if (cliente == null) {
-                System.out.println("No se pudo agregar el cliente.");
-            } else {
+                System.out.println("Cliente no encontrado, añada sus datos\n");
+                System.out.println("Nombre: ");
+                String nombre = teclado.nextLine();
+                System.out.println("NIF: ");
+                String nif = teclado.nextLine();
+                System.out.println("Domicilio: ");
+                String domicilio = teclado.nextLine();
+
+                System.out.println("¿Es un cliente Premium? (S/N)");
+                String respuesta = teclado.nextLine().toUpperCase();
+                Cliente clientes;
+                if (respuesta.equals("S")) {
+                    clientes = new ClientePremium(mail, nombre, nif, domicilio);
+                } else {
+                    clientes = new ClienteStandar(mail, nombre, nif, domicilio);
+                }
+                datos.getListaCliente().add(clientes);
+                listaCliente = datos.getListaCliente();
+                cliente = clientes;
+                datos.setListaCliente(listaCliente);}
                 Pedido pedido = new Pedido(numeroPedido, cantidad, articulo, cliente);
                 datos.getListaPedido().add(pedido);
-                System.out.println(pedido.toString());
-            }
+                System.out.println(pedido);
         }
     }
 
@@ -193,7 +200,7 @@ public class Controlador {
                 System.out.println("Envios Pendientes:");
                 for (Pedido pedido : listapedido.getArrayList()) {
                     if (pedido.pedidoEnviado() == false) {
-                        System.out.println(pedido.toString());
+                        System.out.println(pedido);
                     }
                 }
             }
@@ -206,7 +213,7 @@ public class Controlador {
                     System.out.println("Envios Pendientes:");
                     for (Pedido pedido : listapedido.getArrayList()) {
                         if (pedido.pedidoEnviado() == true) {
-                            System.out.println(pedido.toString());
+                            System.out.println(pedido);
                         }
                     }
                 }
