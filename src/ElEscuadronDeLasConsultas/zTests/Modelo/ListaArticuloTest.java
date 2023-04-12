@@ -13,7 +13,7 @@ class ListaArticuloTest {
 
     @Test
     void DetectarNullListavacia() {
-        assertNull(listaArticulo.obtenerCodigoArticulo(1));
+        assertNull(listaArticulo.obtenerCodigoArticulo("1"));
     }
 
 

@@ -1,18 +1,18 @@
 package ElEscuadronDeLasConsultas.Modelo;
 
 public class ListaArticulo<T extends Articulo> extends Lista<T> {
-    public Articulo obtenerCodigoArticulo(int codigoArticulo) {
+    public Articulo obtenerCodigoArticulo(String codigoArticulo) {
         for (T articulo : lista) {
-            if (articulo.getCodigoArticulo() == codigoArticulo) {
+            if (articulo.getCodigoArticulo().equals(codigoArticulo)) {
                 return articulo;
             }
         }
         return null;
     }
 
-    public boolean existeArticulo(int codigo) {
+    public boolean existeArticulo(String codigo) {
         for (T articulo : lista) {
-            if (articulo.getCodigoArticulo() == codigo) {
+            if (articulo.getCodigoArticulo().equals(codigo)) {
                 return true;
             }
         }
