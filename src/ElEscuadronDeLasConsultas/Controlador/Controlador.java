@@ -15,6 +15,12 @@ public class Controlador {
         System.out.println("Ingrese los datos del nuevo artículo:");
         System.out.println("Código: ");
         int codigo = Integer.parseInt(teclado.nextLine());
+
+        boolean codigoExiste = datos.getListaArticulo().existeArticulo(codigo);
+        if (codigoExiste) {
+            System.out.println("Ya existe un artículo con ese código.");
+            return;
+        }
         System.out.println("Descripción: ");
         String descripcion = teclado.nextLine();
         System.out.println("Precio: ");
