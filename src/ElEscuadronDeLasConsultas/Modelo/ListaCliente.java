@@ -12,4 +12,13 @@ public class ListaCliente<T extends Cliente> extends Lista<T> {
         return null;
     }
 
+         public boolean existeMail(String mail) {
+              for (T cliente : lista) {
+                  if (cliente.getMail().equals(mail)) {
+                      return true;
+                  }
+              }
+              return false;
+          }
+
 }

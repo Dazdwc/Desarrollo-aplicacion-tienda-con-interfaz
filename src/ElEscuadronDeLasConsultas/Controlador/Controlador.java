@@ -14,7 +14,7 @@ public class Controlador {
     public void addArticulo() {
         System.out.println("Ingrese los datos del nuevo artículo:");
         System.out.println("Código: ");
-        int codigo = Integer.parseInt(teclado.nextLine());
+        String codigo = teclado.nextLine();
 
         boolean codigoExiste = datos.getListaArticulo().existeArticulo(codigo);
         if (codigoExiste) {
@@ -53,13 +53,16 @@ public class Controlador {
 
     //Control de clientes:
     public void addCliente() {
+
         System.out.println("Ingrese los datos del nuevo cliente:");
         System.out.println("Mail: ");
         String mail = teclado.nextLine();
-        ListaCliente<Cliente> listaCliente = datos.getListaCliente();
-        Cliente clienteExistente = listaCliente.obtenerClientePorMail(mail);
 
-        if (clienteExistente == null) {
+        boolean existeMail = datos.getListaCliente().existeMail(mail);
+        if (existeMail) {
+            System.out.println("Este Mail ya existe.");
+            return;
+        }
             System.out.println("Nombre: ");
             String nombre = teclado.nextLine();
             System.out.println("NIF: ");
@@ -78,9 +81,7 @@ public class Controlador {
             datos.getListaCliente().add(cliente);
             System.out.println("El Cliente creado contiene los siguientes datos:");
             System.out.println(cliente);
-        } else {
-            System.out.println("Este Mail ya existe.");
-        }
+
     }
 
     public void mostarCliente() {
@@ -133,11 +134,17 @@ public class Controlador {
         System.out.println("Ingrese los datos del pedido");
         System.out.println("Codigo pedido:");
         int numeroPedido = teclado.nextInt();
+        boolean existePedido = datos.getListaPedido().existePedido(numeroPedido);
+        if (existePedido) {
+            System.out.println("Este Pedido ya existe");
+            return;
+        }
         System.out.println("Cantidad:");
         int cantidad = teclado.nextInt();
         System.out.println("Codigo del articulo");
-        int codigo = teclado.nextInt();
         teclado.nextLine();
+        String codigo = teclado.nextLine();
+
 
         ListaArticulo<Articulo> listaArticulos = datos.getListaArticulo();
         Articulo articulo = listaArticulos.obtenerCodigoArticulo(codigo);

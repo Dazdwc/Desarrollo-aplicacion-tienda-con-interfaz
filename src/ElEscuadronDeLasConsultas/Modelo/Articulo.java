@@ -3,7 +3,7 @@ package ElEscuadronDeLasConsultas.Modelo;
 public class Articulo {
 
     //Atributos
-    private int codigoArticulo;
+    private String codigoArticulo;
     private String descripcion;
     private float pvp;
     private double gastosEnvio;
@@ -11,7 +11,7 @@ public class Articulo {
 
 
 //constructor
-    public Articulo(int codigoArticulo, String descripcion, float pvp, double gastosEnvio, int preparacionMin) {
+    public Articulo(String codigoArticulo, String descripcion, float pvp, double gastosEnvio, int preparacionMin) {
         this.codigoArticulo = codigoArticulo;
         this.descripcion = descripcion;
         this.pvp = pvp;
@@ -22,11 +22,11 @@ public class Articulo {
     //getters and setters
 
 
-    public int getCodigoArticulo() {
+    public String getCodigoArticulo() {
         return codigoArticulo;
     }
 
-    public void setCodigoArticulo(int codigoArticulo) {
+    public void setCodigoArticulo(String codigoArticulo) {
         this.codigoArticulo = codigoArticulo;
     }
 
