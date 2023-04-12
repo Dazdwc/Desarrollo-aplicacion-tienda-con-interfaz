@@ -1,7 +1,7 @@
 package ElEscuadronDeLasConsultas.Controlador;
 import ElEscuadronDeLasConsultas.Modelo.*;
 import java.util.Scanner;
-
+//Hola
 public class Controlador {
 
     private Datos datos;
