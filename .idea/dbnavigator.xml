@@ -26,6 +26,9 @@
     <filter-actions connection-id="054a2a60-3ca1-4794-b7e3-c250206c4e21" dataset="onlinestore.cliente" active-filter-id="EMPTY_FILTER" />
     <filter-actions connection-id="054a2a60-3ca1-4794-b7e3-c250206c4e21" dataset="onlinestore.articulo" active-filter-id="EMPTY_FILTER" />
   </component>
+  <component name="DBNavigator.Project.ExecutionManager">
+    <retain-sticky-names value="false" />
+  </component>
   <component name="DBNavigator.Project.ObjectQuickFilterManager">
     <last-used-operator value="EQUAL" />
     <filters />
