@@ -1,6 +1,7 @@
 package ElEscuadronDeLasConsultas.Controlador;
 import ElEscuadronDeLasConsultas.Modelo.*;
 import java.util.Scanner;
+import java.sql.*;
 
 public class Controlador {
 
@@ -16,11 +17,20 @@ public class Controlador {
         System.out.println("Código: ");
         String codigo = teclado.nextLine();
 
-        boolean codigoExiste = datos.getListaArticulo().existeArticulo(codigo);
-        if (codigoExiste) {
+        boolean existeArticulo;
+        try {
+            ControladorDAO controladorDAO = new ControladorDAO();
+            existeArticulo = controladorDAO.existeArticuloDAO(codigo);
+        } catch (SQLException e) {
+            System.out.println("Error al verificar la existencia del artículo.");
+            return;
+        }
+
+        if (existeArticulo) {
             System.out.println("Ya existe un artículo con ese código.");
             return;
         }
+
         System.out.println("Descripción: ");
         String descripcion = teclado.nextLine();
         System.out.println("Precio: ");
@@ -32,6 +42,13 @@ public class Controlador {
 
         Articulo articulo = new Articulo(codigo, descripcion, precio, gastosEnvio, preparacion);
         datos.getListaArticulo().add(articulo);
+        try {
+            ControladorDAO dao = new ControladorDAO();
+            dao.crearArticuloDao(articulo);
+        } catch (SQLException e) {
+            // Manejar el error de alguna manera apropiada
+            e.printStackTrace();
+        }
         System.out.println("Artículo creado exitosamente.");
         System.out.println("\nEl Articulo creado contiene los siguientes datos:");
         System.out.println(articulo);
@@ -54,33 +71,54 @@ public class Controlador {
     //Control de clientes:
     public void addCliente() {
 
-        System.out.println("Ingrese los datos del nuevo cliente:");
-        System.out.println("Mail: ");
+        System.out.println("Ingrese los datos del nuevo cliente: \n Mail:");
         String mail = teclado.nextLine();
+    //Función modificada para que recorra la base de datos comprobando si existe o no.
 
-        boolean existeMail = datos.getListaCliente().existeMail(mail);
-        if (existeMail) {
-            System.out.println("Este Mail ya existe.");
-            return;
-        }
+        ControladorDAO dao = new ControladorDAO();
+        try {
+            if (dao.existeClienteDAO(mail)) {
+                System.out.println("Este Mail ya existe.");
+                return;
+            }
+
+    //se siguen pidiendo los parametros necesarios
+
             System.out.println("Nombre: ");
             String nombre = teclado.nextLine();
             System.out.println("NIF: ");
             String nif = teclado.nextLine();
             System.out.println("Domicilio: ");
             String domicilio = teclado.nextLine();
-
             System.out.println("¿Es un cliente Premium? (S/N)");
             String respuesta = teclado.nextLine().toUpperCase();
             Cliente cliente;
+
+    // Si la respuesta es 's' se crea un cliente premium y sino se creará uno estandar.
+
             if (respuesta.equals("S")) {
                 cliente = new ClientePremium(mail, nombre, nif, domicilio);
             } else {
                 cliente = new ClienteStandar(mail, nombre, nif, domicilio);
             }
-            datos.getListaCliente().add(cliente);
-            System.out.println("El Cliente creado contiene los siguientes datos:");
-            System.out.println(cliente);
+
+    //Funcion donde incluye el cliente en la base de datos.
+
+            try {
+
+    //Se LLama al la funcion que permite crear el cliente en el DAO
+
+                dao.crearClienteDao(cliente);
+            } catch (SQLException e) {
+
+    //Gestion de error de crear el cliente
+                e.printStackTrace();
+            }
+
+        } catch (SQLException e) {
+    //Gestión de error de el anterior try (verificar mail)
+            e.printStackTrace();
+        }
 
     }
 
@@ -134,18 +172,37 @@ public class Controlador {
         System.out.println("Ingrese los datos del pedido");
         System.out.println("Codigo pedido:");
         int numeroPedido = teclado.nextInt();
-        boolean existePedido = datos.getListaPedido().existePedido(numeroPedido);
-        if (existePedido) {
-            System.out.println("Este Pedido ya existe");
+        boolean existePedido = false;
+        try {
+            ControladorDAO controladorDAO = new ControladorDAO();
+            existePedido = controladorDAO.existePedidoDAO(numeroPedido);
+        } catch (SQLException e) {
+            System.out.println("Error al buscar el pedido en la base de datos: " + e.getMessage());
             return;
+        } finally {
+            if (existePedido) {
+                System.out.println("Este Pedido ya existe");
+                return;
+            }
         }
         System.out.println("Cantidad:");
         int cantidad = teclado.nextInt();
         System.out.println("Codigo del articulo");
         teclado.nextLine();
         String codigo = teclado.nextLine();
+        boolean existeArticulo;
+        try {
+            ControladorDAO controladorDAO = new ControladorDAO();
+            existeArticulo = controladorDAO.existeArticuloDAO(codigo);
+        } catch (SQLException e) {
+            System.out.println("Error al verificar la existencia del artículo.");
+            return;
+        }
 
-
+        if (existeArticulo) {
+            System.out.println("Ya existe un artículo con ese código.");
+            return;
+        }
         ListaArticulo<Articulo> listaArticulos = datos.getListaArticulo();
         Articulo articulo = listaArticulos.obtenerCodigoArticulo(codigo);
 
@@ -176,13 +233,28 @@ public class Controlador {
                 } else {
                     clientes = new ClienteStandar(mail, nombre, nif, domicilio);
                 }
+                ControladorDAO dao = new ControladorDAO();
+                try {
+                    dao.crearClienteDao(cliente);
+                } catch (SQLException e) {
+                    // Manejar el error de alguna manera apropiada
+                    e.printStackTrace();
+                }
                 datos.getListaCliente().add(clientes);
                 listaCliente = datos.getListaCliente();
                 cliente = clientes;
-                datos.setListaCliente(listaCliente);}
-                Pedido pedido = new Pedido(numeroPedido, cantidad, articulo, cliente);
-                datos.getListaPedido().add(pedido);
-                System.out.println(pedido);
+                datos.setListaCliente(listaCliente);
+            }
+            Pedido pedido = new Pedido(numeroPedido, cantidad, articulo, cliente);
+            ControladorDAO dao = new ControladorDAO();
+            try {
+                dao.crearPedidoDao(pedido);
+            } catch (SQLException e) {
+                // Manejar el error de alguna manera apropiada
+                e.printStackTrace();
+            }
+            datos.getListaPedido().add(pedido);
+            System.out.println(pedido);
         }
     }
 
