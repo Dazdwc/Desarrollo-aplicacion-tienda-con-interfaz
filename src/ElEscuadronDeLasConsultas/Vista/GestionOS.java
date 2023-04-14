@@ -121,10 +121,10 @@ public class GestionOS {
                     controlador.eliminarPedido();
                     break;
                 case '3':
-                    controlador.mostrarPedidosPendientes();
+                    controlador.mostrarPedidoPendiente();
                     break;
                 case '4':
-                    controlador.mostrarPedidosEnviados();
+                    controlador.mostrarPedidoEnviado();
                     break;
                 case '0':
                     salir = true;
