@@ -11,7 +11,7 @@ public class ConexionJDBC {
     private Connection connection = null;
 
     //Conectar la BBDD Si la conexión es nula o esta cerrada, se conectará a través
-    //de los parámetros user, pw and url.
+    //de los parámetros user, pw and url......
     public Connection conectar() throws SQLException {
         if (connection == null || connection.isClosed()) {
             connection = DriverManager.getConnection(url, user, password);
