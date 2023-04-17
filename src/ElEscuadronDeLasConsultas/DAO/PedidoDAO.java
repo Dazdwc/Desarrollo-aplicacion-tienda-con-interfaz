@@ -3,6 +3,9 @@ package ElEscuadronDeLasConsultas.DAO;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+
+import ElEscuadronDeLasConsultas.Modelo.Articulo;
+import ElEscuadronDeLasConsultas.Modelo.Cliente;
 import ElEscuadronDeLasConsultas.Modelo.Conexion;
 import ElEscuadronDeLasConsultas.Modelo.Pedido;
 
@@ -106,5 +109,44 @@ public class PedidoDAO {
             conexion.cerrar();
         }
     }
+
+    /*//Metodo para consultar pedidos pendientes
+    public void mostrarPedidoPendienteDAO() throws SQLException {
+        Connection connection = conexion.conectar();
+        String query = "SELECT numeroPedido,cantidad,fecha,Articulo,Cliente FROM pedido";
+        PreparedStatement statement = connection.prepareStatement(query);
+        int contador = 0;
+        ResultSet result = null;
+
+        try {
+            result = statement.executeQuery();
+            while (result.next()) {
+                int numeroPedido = result.getInt("numeroPedido");
+                int cantidad = result.getInt("cantidad");
+                Timestamp fecha = result.getTimestamp("fecha");
+                String articuloNombre = result.getString("Articulo");
+                String clienteNombre = result.getString("Cliente");
+
+                Cliente cliente = recogerClienteDAO(clienteNombre);
+                Articulo articulo = recogerArticuloDAO(articuloNombre);
+
+                LocalDateTime fechaConver = fecha.toLocalDateTime();
+
+
+                Pedido pedido = new Pedido(numeroPedido, cantidad, fechaConver, articulo, cliente);
+                if (pedido.pedidoEnviado() == false) {
+                    System.out.println(pedido.toString());
+                }
+
+            }
+            if (contador == 0) {
+                System.out.println("no existen pedidos que mostrar");
+            }
+        } catch (SQLException e) {
+            throw e;
+        } finally {
+            conexion.cerrar();
+        }
+    }*/
 
 }

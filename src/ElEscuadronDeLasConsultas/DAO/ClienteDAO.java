@@ -10,11 +10,12 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
-public class ClienteDAO {
+public class ClienteDAO implements ClienteFactory{
 
     private final Conexion conexion = new Conexion();
 
     //Método para consultar si existe el cliente
+    @Override
     public boolean existeClienteDAO(String mail) throws SQLException {
         // Creamos las variables necesarias
         Connection connection = null;
@@ -58,6 +59,7 @@ public class ClienteDAO {
     }
 
     //Método para crear Cliente
+    @Override
     public void crearClienteDao(Cliente cliente) throws SQLException {
         // Establecemos la conexión con la base de datos.
         Connection connection = conexion.conectar();
@@ -96,6 +98,7 @@ public class ClienteDAO {
     }
 
     //Método para consultar los Clientes
+    @Override
     public void mostrarClientesDAO() throws SQLException {
         // Establecer la conexión a la base de datos
         Connection connection = conexion.conectar();

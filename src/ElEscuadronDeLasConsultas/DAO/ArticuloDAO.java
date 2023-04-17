@@ -7,14 +7,15 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class ArticuloDAO {
+public class ArticuloDAO implements ArticuloFactory {
 
     //Variable de conexión
     private final Conexion conexion = new Conexion();
 
     // Método que comprueba si existe un artículo en la base de datos
 
-    public boolean existeArticuloDAO(String codigo) throws SQLException {
+    @Override
+    public boolean existeArticuloDao(String codigo) throws SQLException {
 
         // Inicialización de las variables de conexión, sentencia SQL y resultado de la consulta
         Connection connection = null;
@@ -58,6 +59,7 @@ public class ArticuloDAO {
     }
 
     //Método para crear Articulo
+    @Override
     public void crearArticuloDao(Articulo articulo) throws SQLException {
         // Conectamos a la bd y añadimos articulo mediante INSERT INTO
         Connection connection = conexion.conectar();
@@ -91,7 +93,8 @@ public class ArticuloDAO {
     }
 
     //Método para mostrar articulos
-    public void mostrarArticuloDAO() throws SQLException {
+    @Override
+    public void mostrarArticuloDao() throws SQLException {
         // Conectar a la base de datos
         Connection connection = conexion.conectar();
 
