@@ -1,5 +1,8 @@
 package ElEscuadronDeLasConsultas.Controlador;
+import ElEscuadronDeLasConsultas.DAO.ArticuloDAO;
 import ElEscuadronDeLasConsultas.Modelo.*;
+
+import java.sql.SQLException;
 import java.util.Scanner;
 
 public class Controlador {
@@ -11,7 +14,7 @@ public class Controlador {
     }
 
     //Control de articulos
-    public void addArticulo() {
+    /*public void addArticulo() {
         System.out.println("Ingrese los datos del nuevo artículo:");
         System.out.println("Código: ");
         String codigo = teclado.nextLine();
@@ -35,10 +38,33 @@ public class Controlador {
         System.out.println("Artículo creado exitosamente.");
         System.out.println("\nEl Articulo creado contiene los siguientes datos:");
         System.out.println(articulo);
+    }*/
+
+    public void addArticulo(){
+
+        ArticuloDAO AD = new ArticuloDAO();
+        System.out.println("Código del Articulo");
+        String codigo = teclado.nextLine();
+        System.out.println("Descripción: ");
+        String descripcion = teclado.nextLine();
+        System.out.println("Precio: ");
+        float precio = Float.parseFloat(teclado.nextLine());
+        System.out.println("Gastos de envío: ");
+        double gastosEnvio = Double.parseDouble(teclado.nextLine());
+        System.out.println("Tiempo de preparación (minutos): ");
+        int preparacion = Integer.parseInt(teclado.nextLine());
+
+        Articulo articulo = new Articulo(codigo, descripcion, precio, gastosEnvio, preparacion);
+
+        try {
+            AD.crearArticuloDao(articulo);
+        } catch (SQLException e) {
+            System.out.println("Ha ocurrido un error al crear el artículo: " + e.getMessage());
+        }
+
     }
 
-
-    public void mostrarArticulo() {
+    /*public void mostrarArticulo() {
         ListaArticulo<Articulo> listaArticulos = datos.getListaArticulo();
         if (listaArticulos.isEmpty()) {
             System.out.println("No hay artículos registrados.");
@@ -48,7 +74,27 @@ public class Controlador {
                 System.out.println("El articulo es el siguiente:\n " + articulo.toString());
             }
         }
+    }*/
+
+    public void mostrarArticulo() throws SQLException {
+        ArticuloDAO AD = new ArticuloDAO();
+        Scanner input = new Scanner(System.in);
+
+        System.out.println("====================Listado de Articulos Disponibles======================");
+
+        // Obtener la lista de artículos como una cadena de texto
+        String listaArticulos = AD.mostrarArticuloDao();
+
+        System.out.println(listaArticulos);
+        System.out.println("==========================================================================\n");
+
+        // AD.crearArticuloDao(articulo); // Comentado para evitar error
     }
+
+
+
+
+
 
 
     //Control de clientes:

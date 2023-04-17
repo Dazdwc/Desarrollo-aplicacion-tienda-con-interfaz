@@ -21,6 +21,9 @@ public class Pedido {
         this.cliente = cliente;
     }
 
+    public Pedido(int numeroPedido, int cantidad, Articulo articulo, Cliente cliente, LocalDateTime fechaConver) {
+    }
+
     public int getNumeroPedido() {
         return numeroPedido;
     }

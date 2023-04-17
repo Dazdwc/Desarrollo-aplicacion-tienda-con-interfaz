@@ -94,13 +94,15 @@ public class ArticuloDAO implements ArticuloFactory {
 
     //Método para mostrar articulos
     @Override
-    public void mostrarArticuloDao() throws SQLException {
+    public String mostrarArticuloDao() throws SQLException {
         // Conectar a la base de datos
         Connection connection = conexion.conectar();
 
         // Crear la consulta SQL
         String query = "SELECT codigoArticulo, descripcion, pvp, gastosEnvio, preparacionMin FROM articulo";
         PreparedStatement statement = connection.prepareStatement(query);
+
+        String listaArticulos = "";
 
         try {
             // Ejecutar la consulta y obtener los resultados
@@ -115,9 +117,9 @@ public class ArticuloDAO implements ArticuloFactory {
                 int preparacion = result.getInt("preparacionMin");
                 Articulo articulo = new Articulo(codigo, descripcion, precio, gastosEnvio, preparacion);
 
-                // Mostrar la información del artículo en la pantalla
+                // Agregar la información del artículo a la lista de artículos
                 if (articulo != null) {
-                    System.out.println(articulo.toString());
+                    listaArticulos += articulo.toString() + "\n";
                 }
             }
         } catch (SQLException e) {
@@ -126,8 +128,9 @@ public class ArticuloDAO implements ArticuloFactory {
             // Cerrar la conexión a la base de datos
             conexion.cerrar();
         }
-    }
 
+        return listaArticulos;
+    }
 
 
 }

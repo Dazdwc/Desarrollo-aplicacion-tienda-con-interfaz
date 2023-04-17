@@ -13,5 +13,9 @@ public interface ArticuloFactory {
     void crearArticuloDao(Articulo articulo) throws SQLException;
 
     //Método para mostrar articulos
-    void mostrarArticuloDao() throws SQLException;
+    String mostrarArticuloDao() throws SQLException;
+
+    //Método para mostrar articulos
+
+
 }

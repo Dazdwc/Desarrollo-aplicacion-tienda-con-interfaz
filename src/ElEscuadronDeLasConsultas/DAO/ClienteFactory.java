@@ -13,4 +13,5 @@ public interface ClienteFactory {
 
     //Método para consultar los Clientes
     void mostrarClientesDAO() throws SQLException;
+
 }
