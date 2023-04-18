@@ -102,7 +102,7 @@ public class ArticuloDAO implements ArticuloFactory {
         String query = "SELECT codigoArticulo, descripcion, pvp, gastosEnvio, preparacionMin FROM articulo";
         PreparedStatement statement = connection.prepareStatement(query);
 
-        String listaArticulos = "";
+        StringBuilder listaArticulos = new StringBuilder();
 
         try {
             // Ejecutar la consulta y obtener los resultados
@@ -119,8 +119,13 @@ public class ArticuloDAO implements ArticuloFactory {
 
                 // Agregar la información del artículo a la lista de artículos
                 if (articulo != null) {
-                    listaArticulos += articulo.toString() + "\n";
+                    listaArticulos.append(articulo.toString()).append("\n");
                 }
+            }
+
+            // Si la lista de artículos está vacía, agregar un mensaje indicando que no hay artículos
+            if (listaArticulos.length() == 0) {
+                listaArticulos.append("No hay artículos disponibles");
             }
         } catch (SQLException e) {
             throw e;
@@ -129,7 +134,7 @@ public class ArticuloDAO implements ArticuloFactory {
             conexion.cerrar();
         }
 
-        return listaArticulos;
+        return listaArticulos.toString();
     }
 
 

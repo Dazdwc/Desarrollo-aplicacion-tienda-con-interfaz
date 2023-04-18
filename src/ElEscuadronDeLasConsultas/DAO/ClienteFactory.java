@@ -14,4 +14,7 @@ public interface ClienteFactory {
     //Método para consultar los Clientes
     void mostrarClientesDAO() throws SQLException;
 
+    String mostrarClienteStandarDAO() throws SQLException;
+
+    String mostrarClientePremiumDAO() throws SQLException;
 }

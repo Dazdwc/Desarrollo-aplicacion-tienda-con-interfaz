@@ -1,5 +1,6 @@
 package ElEscuadronDeLasConsultas.Controlador;
 import ElEscuadronDeLasConsultas.DAO.ArticuloDAO;
+import ElEscuadronDeLasConsultas.DAO.ClienteDAO;
 import ElEscuadronDeLasConsultas.Modelo.*;
 
 import java.sql.SQLException;
@@ -76,29 +77,40 @@ public class Controlador {
         }
     }*/
 
-    public void mostrarArticulo() throws SQLException {
+    public void mostrarArticulo() {
         ArticuloDAO AD = new ArticuloDAO();
-        Scanner input = new Scanner(System.in);
+        String codigo;
 
-        System.out.println("====================Listado de Articulos Disponibles======================");
-
-        // Obtener la lista de artículos como una cadena de texto
-        String listaArticulos = AD.mostrarArticuloDao();
-
-        System.out.println(listaArticulos);
+        System.out.println("====================Listado de Artículos Disponibles======================");
+        // Mostramos todos los artículos disponibles
+        try {
+            System.out.println(AD.mostrarArticuloDao());
+        } catch (SQLException e) {
+            System.out.println("Error al mostrar los artículos disponibles: " + e.getMessage());
+        }
         System.out.println("==========================================================================\n");
 
-        // AD.crearArticuloDao(articulo); // Comentado para evitar error
+        System.out.print("Introduce el código del artículo que deseas mostrar:\n");
+        codigo = teclado.nextLine();
+
+        // Mostramos el artículo solicitado
+        try {
+            String articuloMostrado = AD.mostrarArticuloDao();
+            if (articuloMostrado == null) {
+                System.out.println("No se encontró ningún artículo con el código " + codigo);
+            } else {
+                System.out.println(articuloMostrado);
+            }
+        } catch (SQLException e) {
+            System.out.println("Error al mostrar el artículo: " + e.getMessage());
+        }
     }
 
 
 
 
-
-
-
     //Control de clientes:
-    public void addCliente() {
+    /*public void addCliente() {
 
         System.out.println("Ingrese los datos del nuevo cliente:");
         System.out.println("Mail: ");
@@ -128,9 +140,52 @@ public class Controlador {
             System.out.println("El Cliente creado contiene los siguientes datos:");
             System.out.println(cliente);
 
+    }*/
+    public void addCliente() throws SQLException {
+        // Creamos un objeto ClienteDAO
+        ClienteDAO CD = new ClienteDAO();
+        // Pedimos al usuario que introduzca el mail del cliente
+        System.out.print("Introduce el mail: ");
+        String mail = teclado.nextLine();
+        // Comprobamos si el cliente ya está registrado en la base de datos
+        boolean existeClienteDAO = CD.existeClienteDAO(mail);
+
+        if (existeClienteDAO) {
+            // Si el cliente ya está registrado, lo notificamos al usuario
+            System.out.println("\n\t¡Este cliente ya está registrado!");
+        } else {
+            // Si el cliente no está registrado, pedimos los datos necesarios para crearlo
+            System.out.println("Nombre: ");
+            String nombre = teclado.nextLine();
+            System.out.println("NIF: ");
+            String nif = teclado.nextLine();
+            System.out.println("Domicilio: ");
+            String domicilio = teclado.nextLine();
+
+            // Preguntamos si el cliente es Premium
+            System.out.println("¿Es un cliente Premium? (S/N)");
+            String respuesta = teclado.nextLine().toUpperCase();
+            Cliente cliente;
+            if (respuesta.equals("S")) {
+                // Si el cliente es Premium, creamos un objeto ClientePremium
+                cliente = new ClientePremium(mail, nombre, nif, domicilio);
+            } else {
+                // Si el cliente no es Premium, creamos un objeto ClienteStandard
+                cliente = new ClienteStandar(mail, nombre, nif, domicilio);
+            }
+
+            try {
+                // Intentamos crear el cliente en la base de datos
+                CD.crearClienteDao(cliente);
+            } catch (SQLException e) {
+                // Si ocurre un error al crear el cliente, notificamos al usuario e imprimimos la traza del error
+                System.out.println("Ha ocurrido un error al crear el cliente: ");
+                e.printStackTrace();
+            }
+        }
     }
 
-    public void mostarCliente() {
+    /*public void mostrarCliente() {
         ListaCliente<Cliente> listaCliente = datos.getListaCliente();
         if (listaCliente.isEmpty()) {
             System.out.println("No hay clientes que mostrar.");
@@ -145,10 +200,25 @@ public class Controlador {
                 }
             }
         }
+    }*/
+
+    public void mostrarCliente(){
+            try {
+                ClienteDAO clienteDAO = new ClienteDAO();
+                clienteDAO.mostrarClientesDAO();
+            } catch (SQLException e) {
+                System.out.println("Error al mostrar los clientes: " + e.getMessage());
+            }
+        }
+
+
+    public void mostrarClienteStandar() throws SQLException {
+        ClienteDAO CD = new ClienteDAO();
+        System.out.println(CD.mostrarClienteStandarDAO());
     }
 
-
-    public void mostarClienteStandar() {
+/*
+    public void mostrarClienteStandar() {
         ListaCliente<Cliente> listaCliente = datos.getListaCliente();
         if (listaCliente.isEmpty()) {
             System.out.println("No hay clientes que mostrar.");
@@ -160,8 +230,13 @@ public class Controlador {
                     System.out.println(cliente);}
             }
         }
+    }*/
+
+    public void mostrarClientePremium()throws SQLException{
+        ClienteDAO CD = new ClienteDAO();
+        System.out.println(CD.mostrarClientePremiumDAO());
     }
-    public void mostarClientePremium() {
+    /*public void mostrarClientePremium() {
         ListaCliente<Cliente> listaCliente = datos.getListaCliente();
         if (listaCliente.isEmpty()) {
             System.out.println("No hay clientes que mostrar.");
@@ -173,7 +248,7 @@ public class Controlador {
                     System.out.println(cliente);}
             }
         }
-    }
+    }*/
 
     // controlador Pedido
     public void addPedido() {

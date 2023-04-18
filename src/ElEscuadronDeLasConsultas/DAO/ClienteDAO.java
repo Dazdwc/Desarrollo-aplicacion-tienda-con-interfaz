@@ -142,4 +142,100 @@ public class ClienteDAO implements ClienteFactory{
         }
     }
 
+    @Override
+    public String mostrarClienteStandarDAO() throws SQLException {
+        // Conexión a la base de datos
+        Connection connection = conexion.conectar();
+
+        // Consulta SQL para obtener los datos de los clientes
+        String query = "SELECT nombre, nif, domicilio, tipoCliente, mail FROM cliente";
+
+        // Preparación de la sentencia SQL
+        PreparedStatement statement = connection.prepareStatement(query);
+
+        StringBuilder sb = new StringBuilder();
+
+        try {
+            // Ejecución de la consulta
+            ResultSet result = statement.executeQuery();
+
+            // Recorrido de los resultados
+            while (result.next()) {
+                // Obtención de los datos del cliente
+                String nombre = result.getString("nombre");
+                String nif = result.getString("nif");
+                String domicilio = result.getString("domicilio");
+                String tipoCliente = result.getString("tipoCliente");
+                String mail = result.getString("mail");
+
+                // Creación del objeto Cliente correspondiente
+                Cliente cliente;
+                if (tipoCliente.equals("Standar")) {
+                    cliente = new ClienteStandar(mail, nombre, nif, domicilio);
+                } else {
+                    cliente = null;
+                }
+
+                // Impresión del cliente si es de tipo Standar
+                if (cliente != null) {
+                    sb.append(cliente.toString()).append("\n");
+                }
+            }
+        } catch (SQLException e) {
+            throw e;
+        } finally {
+            // Cierre de la conexión a la base de datos
+            conexion.cerrar();
+        }
+
+        return sb.toString();
+    }
+    @Override
+    public String mostrarClientePremiumDAO() throws SQLException {
+        // Conexión a la base de datos
+        Connection connection = conexion.conectar();
+
+        // Consulta SQL para obtener los datos de los clientes
+        String query = "SELECT nombre, nif, domicilio, tipoCliente, mail FROM cliente";
+
+        // Preparación de la sentencia SQL
+        PreparedStatement statement = connection.prepareStatement(query);
+
+        StringBuilder sb = new StringBuilder();
+
+        try {
+            // Ejecución de la consulta
+            ResultSet result = statement.executeQuery();
+
+            // Recorrido de los resultados
+            while (result.next()) {
+                // Obtención de los datos del cliente
+                String nombre = result.getString("nombre");
+                String nif = result.getString("nif");
+                String domicilio = result.getString("domicilio");
+                String tipoCliente = result.getString("tipoCliente");
+                String mail = result.getString("mail");
+
+                // Creación del objeto Cliente correspondiente
+                Cliente cliente;
+                if (tipoCliente.equals("Premium")) {
+                    cliente = new ClientePremium(mail, nombre, nif, domicilio);
+                } else {
+                    cliente = null;
+                }
+
+                // Impresión del cliente si es de tipo Standar
+                if (cliente != null) {
+                    sb.append(cliente.toString()).append("\n");
+                }
+            }
+        } catch (SQLException e) {
+            throw e;
+        } finally {
+            // Cierre de la conexión a la base de datos
+            conexion.cerrar();
+        }
+
+        return sb.toString();
+    }
 }
