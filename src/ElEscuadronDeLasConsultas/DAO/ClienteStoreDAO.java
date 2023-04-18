@@ -3,15 +3,18 @@ import ElEscuadronDeLasConsultas.Modelo.Cliente;
 import ElEscuadronDeLasConsultas.Modelo.ClientePremium;
 import ElEscuadronDeLasConsultas.Modelo.ClienteStandar;
 
- public class ClienteStoreDAO {
+import java.sql.SQLException;
 
-    public Cliente crearCliente(String mail, String nombre, String nif, String domicilio, String tipoCliente) {
-        if (tipoCliente.equals("Standar")) {
-            return new ClienteStandar(mail, nombre, nif, domicilio);
-        } else if (tipoCliente.equals("Premium")) {
-            return new ClientePremium(mail, nombre, nif, domicilio);
-        }
-        return null;
-    }
+
+public interface ClienteStoreDAO {
+         //Método para consultar si existe el cliente
+         boolean existeClienteDAO(String mail) throws SQLException;
+
+         //Método para crear Cliente
+         void crearClienteDao(Cliente cliente) throws SQLException;
+
+         //Método para consultar los Clientes
+         void mostrarClientesDAO() throws SQLException;
 
 }
+

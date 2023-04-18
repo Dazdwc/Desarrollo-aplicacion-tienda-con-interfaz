@@ -81,34 +81,7 @@ public class ClienteDAO {
     }
 
 
-//Consultas a la base (Cliente, Articulo, Pedido)
 
-    public Cliente recogerClienteDAO(String mail) throws SQLException {
-        Connection connection = conexion.conectar();
-        Cliente cliente = null;
-        String query = "SELECT mail,nombre, nif, domicilio, tipoCliente FROM cliente WHERE mail=?";
-        PreparedStatement statement = connection.prepareStatement(query);
-        statement.setString(1, mail);
-
-        try {
-            ResultSet result = statement.executeQuery();
-            if (result.next()) {
-                String nombre = result.getString("nombre");
-                String nif = result.getString("nif");
-                String domicilio = result.getString("domicilio");
-                String tipoCliente = result.getString("tipoCliente");
-
-                // Utilizar ClienteFactory para crear el objeto de tipo Cliente
-                ClienteStoreDAO clienteFactory = new ClienteStoreDAO();
-                cliente = clienteFactory.crearCliente(mail, nombre, nif, domicilio, tipoCliente);
-            }
-        } catch (SQLException e) {
-            throw e;
-        } finally {
-            conexion.cerrar(); // Cerrar la conexión en el finally
-        }
-        return cliente;
-    }
 
     //Devuelve un mapa donde la clave es el correo electrónico del cliente y el valor es el objeto cliente.
 
@@ -170,6 +143,7 @@ public class ClienteDAO {
     }
 
     //Mostrar Clientes Premium
+
     public void mostrarPremiumDAO() throws SQLException {
         Connection connection = conexion.conectar();
         String query = "SELECT nombre, nif, domicilio, tipoCliente, mail FROM cliente";
