@@ -96,8 +96,7 @@ public class Pedido {
 
         public double precioEnvio() {
                 double descuento = cliente.descuentoEnv();
-                double precioEnvioConDescuento = articulo.getGastosEnvio() * (1 - descuento);
-                return precioEnvioConDescuento;
+            return articulo.getGastosEnvio() * (1 - descuento);
         }
 
         public double PrecioTotal(){

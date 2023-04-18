@@ -5,22 +5,18 @@ import java.sql.*;
 
 public class Controlador {
 
-    private Datos datos;
     Scanner teclado = new Scanner(System.in);
-    public Controlador() {
-        datos = new Datos();
-    }
 
     //Control de articulos
-    public void addArticulo() {
+    public void addArticulo(){
         System.out.println("Ingrese los datos del nuevo artículo:");
         System.out.println("Código: ");
         String codigo = teclado.nextLine();
+        ArticuloDAO articuloDAO = new ArticuloDAOimp();
 
         boolean existeArticulo;
         try {
-            ControladorDAO controladorDAO = new ControladorDAO();
-            existeArticulo = controladorDAO.existeArticuloDAO(codigo);
+            existeArticulo = articuloDAO.existeArticulo(codigo);
         } catch (SQLException e) {
             System.out.println("Error al verificar la existencia del artículo.");
             return;
@@ -42,8 +38,9 @@ public class Controlador {
 
         Articulo articulo = new Articulo(codigo, descripcion, precio, gastosEnvio, preparacion);
         try {
-            ControladorDAO dao = new ControladorDAO();
-            dao.crearArticuloDao(articulo);
+            FactoryDAO factory = new FactoryMySQLDAO();
+            ArticuloDAO art = factory.crearArticuloDAO();
+            art.crearArticulo(articulo);
         } catch (SQLException e) {
             // Manejar el error de alguna manera apropiada
             e.printStackTrace();
@@ -53,9 +50,9 @@ public class Controlador {
 
 
     public void mostrarArticulo() {
-        ControladorDAO cont = new ControladorDAO();
+        ArticuloDAO art = new ArticuloDAOimp();
         try {
-            cont.mostrarArticuloDAO();
+            art.mostrarArticulo();
         } catch (SQLException e) {
             System.out.println("Error al mostrar los clientes: " + e.getMessage());
         }
@@ -68,10 +65,9 @@ public class Controlador {
         System.out.println("Ingrese los datos del nuevo cliente: \nMail:");
         String mail = teclado.nextLine();
     //Función modificada para que recorra la base de datos comprobando si existe o no.
-
-        ControladorDAO dao = new ControladorDAO();
+       ClienteDAO dao = new ClienteDAOimp();
         try {
-            if (dao.existeClienteDAO(mail)) {
+            if (dao.existeCliente(mail)) {
                 System.out.println("Este Mail ya existe.");
                 return;
             }
@@ -101,8 +97,10 @@ public class Controlador {
             try {
 
     //Se LLama al la funcion que permite crear el cliente en el DAO
+                FactoryDAO factory = new FactoryMySQLDAO();
+                ClienteDAO cli = factory.crearClienteDAO();
+                cli.crearCliente(cliente);
 
-                dao.crearClienteDao(cliente);
             } catch (SQLException e) {
 
     //Gestion de error de crear el cliente
@@ -117,9 +115,9 @@ public class Controlador {
     }
 
     public void mostarCliente() {
-        ControladorDAO cont = new ControladorDAO();
+        ClienteDAO clienteDAO = new ClienteDAOimp();
         try {
-            cont.mostrarClientesDAO();
+            clienteDAO.mostrarClientes();
         } catch (SQLException e) {
             System.out.println("Error al mostrar los clientes: " + e.getMessage());
         }
@@ -128,17 +126,17 @@ public class Controlador {
 
     public void mostarClienteStandar() {
 
-        ControladorDAO cont = new ControladorDAO();
+        ClienteDAO clienteDAO = new ClienteDAOimp();
         try {
-            cont.mostrarStandarDAO();
+            clienteDAO.mostrarStandar();
         } catch (SQLException e) {
             System.out.println("Error al mostrar los clientes: " + e.getMessage());
         }
     }
     public void mostarClientePremium() {
-        ControladorDAO cont = new ControladorDAO();
+        ClienteDAO clienteDAO = new ClienteDAOimp();
         try {
-            cont.mostrarPremiumDAO();
+            clienteDAO.mostrarPremium();
         } catch (SQLException e) {
             System.out.println("Error al mostrar los clientes: " + e.getMessage());
         }
@@ -150,54 +148,51 @@ public class Controlador {
         System.out.println("Ingrese los datos del pedido");
         System.out.println("Codigo pedido:");
         int numeroPedido = teclado.nextInt();
-        boolean existePedido = false;
+        boolean existePedido;
         try {
-            ControladorDAO controladorDAO = new ControladorDAO();
-            existePedido = controladorDAO.existePedidoDAO(numeroPedido);
+            PedidoDAO pedidoDAO = new PedidoDAOimp();
+            existePedido = pedidoDAO.existePedido(numeroPedido);
         } catch (SQLException e) {
             System.out.println("Error al buscar el pedido en la base de datos: " + e.getMessage());
             return;
-        } finally {
-            if (existePedido) {
+        }if (existePedido) {
                 System.out.println("Este Pedido ya existe");
                 return;
             }
-        }
         System.out.println("Cantidad:");
         int cantidad = teclado.nextInt();
         System.out.println("Codigo del articulo");
         teclado.nextLine();
         String codigo = teclado.nextLine();
 
-            ControladorDAO controladorDAO = new ControladorDAO();
-            Articulo articulo = null;
+            ArticuloDAO articuloDAO = new ArticuloDAOimp();
+
+            Articulo articulo;
             try {
-                articulo = controladorDAO.recogerArticuloDAO(codigo);
+                articulo = articuloDAO.recogerArticulo(codigo);
             } catch (SQLException e) {
                 System.out.println("Error al recoger el artículo: " + e.getMessage());
                 return;
             }
             if (articulo == null) {
                 System.out.println("El articulo que quiere seleccionar no existe.");
-                mostrarArticulo();
-                return;
         } else {
                 System.out.println("Mail del cliente:");
                 String mail = teclado.nextLine();
 
-                ControladorDAO controladorDAO1 = new ControladorDAO();
+                ClienteDAO clienteDAO = new ClienteDAOimp();
                 Cliente cliente;
                 try {
-                    cliente = controladorDAO1.recogerClienteDAO(mail);
+                    cliente = clienteDAO.recogerCliente(mail);
                 } catch (SQLException e) {
                     System.out.println("Error al recoger el cliente: " + e.getMessage());
                     return;
                 }
                 if (cliente == null) {
                     System.out.println("El cliente no existe, creelo:");
-                    addCliente();
+                        addCliente();
                     try {
-                        cliente = controladorDAO1.recogerClienteDAO(mail);
+                        cliente = clienteDAO.recogerCliente(mail);
                     } catch (SQLException e) {
                         System.out.println("Error al recoger el cliente: " + e.getMessage());
                         return;
@@ -208,9 +203,11 @@ public class Controlador {
                     return;
                 }
                 Pedido pedido = new Pedido(numeroPedido, cantidad, articulo, cliente);
-                ControladorDAO dao = new ControladorDAO();
+                FactoryDAO factory = new FactoryMySQLDAO();
+                PedidoDAO ped = factory.crearPedidoDAO();
+
                 try {
-                    dao.crearPedidoDao(pedido);
+                    ped.crearPedido(pedido);
                 } catch (SQLException e) {
                     // Manejar el error de alguna manera apropiada
                     e.printStackTrace();
@@ -222,9 +219,9 @@ public class Controlador {
             System.out.println("Ingrese el numero de pedido que desea eliminar:");
             int codigo = teclado.nextInt();
 
-            ControladorDAO controladorDAO = new ControladorDAO();
+            PedidoDAO pedidoDAO = new PedidoDAOimp();
                 try {
-                    controladorDAO.eliminarPedidoDAO(codigo);
+                    pedidoDAO.eliminarPedido(codigo);
                 } catch (SQLException e) {
                     System.out.println("Error al mostrar los pedidos: " + e.getMessage());
                 }
@@ -233,19 +230,19 @@ public class Controlador {
     public void mostrarPedidoPendiente() {
         System.out.println("¿Quiere filtrar por cliente? (S/N) \nSi no lo filtra se mostrarán todos.\n");
         String respuesta = teclado.nextLine().toUpperCase();
-        ControladorDAO controladorDAO = new ControladorDAO();
+        PedidoDAO pedidoDAO = new PedidoDAOimp();
 
         if(respuesta.equalsIgnoreCase("S")) {
             System.out.println("Ingrese el correo electrónico del cliente:");
             String correoElectronico = teclado.nextLine();
             try {
-                controladorDAO.mostrarPedidoPendienteFiltradoDAO(correoElectronico);
+                pedidoDAO.mostrarPedidoPendienteFiltrado(correoElectronico);
             } catch (SQLException e) {
                 System.out.println("Error al mostrar los pedidos: " + e.getMessage());
             }
         }else{
             try {
-                controladorDAO.mostrarPedidoPendienteDAO();
+                pedidoDAO.mostrarPedidoPendiente();
             } catch (SQLException e) {
                 System.out.println("Error al mostrar los pedidos: " + e.getMessage());
             }
@@ -255,19 +252,19 @@ public class Controlador {
         public void mostrarPedidoEnviado() {
             System.out.println("¿Quiere filtrar por cliente? (S/N) \nSi no lo filtra se mostrarán todos.\n");
             String respuesta = teclado.nextLine().toUpperCase();
-            ControladorDAO controladorDAO = new ControladorDAO();
+            PedidoDAO pedidoDAO = new PedidoDAOimp();
 
             if(respuesta.equalsIgnoreCase("S")) {
                 System.out.println("Ingrese el correo electrónico del cliente:");
                 String correoElectronico = teclado.nextLine();
                 try {
-                    controladorDAO.mostrarPedidoEnviadoFiltradoDAO(correoElectronico);
+                    pedidoDAO.mostrarPedidoEnviadoFiltrado(correoElectronico);
                 } catch (SQLException e) {
                     System.out.println("Error al mostrar los pedidos: " + e.getMessage());
                 }
             }else{
                 try {
-                    controladorDAO.mostrarPedidoEnviadoDAO();
+                    pedidoDAO.mostrarPedidoEnviado();
                 } catch (SQLException e) {
                     System.out.println("Error al mostrar los pedidos: " + e.getMessage());
                 }

@@ -4,7 +4,7 @@ import ElEscuadronDeLasConsultas.Controlador.Controlador;
 
 import java.util.Scanner;
 public class GestionOS {
-    private Controlador controlador;
+    private final Controlador controlador;
     Scanner teclado = new Scanner(System.in);
 
     public GestionOS() {
@@ -31,17 +31,10 @@ public class GestionOS {
             System.out.println("0. Salir");
             opcio = pedirOpcion();
             switch (opcio) {
-                case '1':
-                    gestionarArticulos();
-                    break;
-                case '2':
-                    gestionarCliente();
-                    break;
-                case '3':
-                    gestionarPedido();
-                    break;
-                case '0':
-                    salir = true;
+                case '1' -> gestionarArticulos();
+                case '2' -> gestionarCliente();
+                case '3' -> gestionarPedido();
+                case '0' -> salir = true;
             }
         } while (!salir);
     }
@@ -56,17 +49,10 @@ public class GestionOS {
             System.out.println("0. Volver");
             opcio = pedirOpcion();
             switch (opcio) {
-                case '1':
-                    controlador.addArticulo();
-                    break;
-                case '2':
-                    controlador.mostrarArticulo();
-                    break;
-                case '0':
-                    salir = true;
-                    break;
-                default:
-                    System.out.println("Opción no válida. Intente de nuevo.");
+                case '1' -> controlador.addArticulo();
+                case '2' -> controlador.mostrarArticulo();
+                case '0' -> salir = true;
+                default -> System.out.println("Opción no válida. Intente de nuevo.");
             }
         } while (!salir);
     }
@@ -82,23 +68,12 @@ public class GestionOS {
             System.out.println("0. Volver");
             opcio = pedirOpcion();
             switch (opcio) {
-                case '1':
-                    controlador.addCliente();
-                    break;
-                case '2':
-                    controlador.mostarCliente();
-                    break;
-                case '3':
-                    controlador.mostarClienteStandar();
-                    break;
-                case '4':
-                    controlador.mostarClientePremium();
-                    break;
-                case '0':
-                    salir = true;
-                    break;
-                default:
-                    System.out.println("Opción no válida. Intente de nuevo.");
+                case '1' -> controlador.addCliente();
+                case '2' -> controlador.mostarCliente();
+                case '3' -> controlador.mostarClienteStandar();
+                case '4' -> controlador.mostarClientePremium();
+                case '0' -> salir = true;
+                default -> System.out.println("Opción no válida. Intente de nuevo.");
             }
         } while (!salir);
     }
@@ -114,23 +89,12 @@ public class GestionOS {
             System.out.println("0. Volver");
             opcio = pedirOpcion();
             switch (opcio) {
-                case '1':
-                    controlador.addPedido();
-                    break;
-                case '2':
-                    controlador.eliminarPedido();
-                    break;
-                case '3':
-                    controlador.mostrarPedidoPendiente();
-                    break;
-                case '4':
-                    controlador.mostrarPedidoEnviado();
-                    break;
-                case '0':
-                    salir = true;
-                    break;
-                default:
-                    System.out.println("Opción no válida. Intente de nuevo.");
+                case '1' -> controlador.addPedido();
+                case '2' -> controlador.eliminarPedido();
+                case '3' -> controlador.mostrarPedidoPendiente();
+                case '4' -> controlador.mostrarPedidoEnviado();
+                case '0' -> salir = true;
+                default -> System.out.println("Opción no válida. Intente de nuevo.");
             }
         } while (!salir);
     }
