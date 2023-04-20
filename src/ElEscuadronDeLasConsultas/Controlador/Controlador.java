@@ -25,7 +25,7 @@ public class Controlador {
         if (existeArticulo) {
             System.out.println("Ya existe un artículo con ese código.");
             return;
-        }
+        }else{
 
         System.out.println("Descripción: ");
         String descripcion = teclado.nextLine();
@@ -46,6 +46,7 @@ public class Controlador {
             e.printStackTrace();
         }
         System.out.println("Artículo creado exitosamente.");
+    }
     }
 
 
