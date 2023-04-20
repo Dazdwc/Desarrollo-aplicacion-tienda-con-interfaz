@@ -10,7 +10,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
-public class ClienteDAO implements ClienteFactory{
+public class ClienteDAO implements ClienteFactory {
 
     private final Conexion conexion = new Conexion();
 
@@ -122,15 +122,19 @@ public class ClienteDAO implements ClienteFactory{
 
                 // Crear un objeto Cliente según el tipo de cliente
                 Cliente cliente = null;
-                if (tipoCliente.equals("Standar")) {
-                    cliente = new ClienteStandar(mail, nombre, nif, domicilio);
-                } else if (tipoCliente.equals("Premium")) {
-                    cliente = new ClientePremium(mail, nombre, nif, domicilio);
+                if (tipoCliente != null) {
+                    if (tipoCliente.equals("Standar")) {
+                        cliente = new ClienteStandar(mail, nombre, nif, domicilio);
+                    } else if (tipoCliente.equals("Premium")) {
+                        cliente = new ClientePremium(mail, nombre, nif, domicilio);
+                    }
                 }
 
                 // Mostrar la información del cliente en la pantalla
                 if (cliente != null) {
                     System.out.println(cliente.toString());
+                } else {
+                    System.out.println("Tipo de cliente nulo en la fila actual");
                 }
             }
         } catch (SQLException e) {
@@ -141,6 +145,7 @@ public class ClienteDAO implements ClienteFactory{
             conexion.cerrar();
         }
     }
+
 
     @Override
     public String mostrarClienteStandarDAO() throws SQLException {
@@ -168,16 +173,9 @@ public class ClienteDAO implements ClienteFactory{
                 String tipoCliente = result.getString("tipoCliente");
                 String mail = result.getString("mail");
 
-                // Creación del objeto Cliente correspondiente
-                Cliente cliente;
-                if (tipoCliente.equals("Standar")) {
-                    cliente = new ClienteStandar(mail, nombre, nif, domicilio);
-                } else {
-                    cliente = null;
-                }
-
-                // Impresión del cliente si es de tipo Standar
-                if (cliente != null) {
+                // Creación del objeto Cliente correspondiente si el tipo de cliente es "Standar"
+                if (tipoCliente != null && tipoCliente.equals("Standar")) {
+                    Cliente cliente = new ClienteStandar(mail, nombre, nif, domicilio);
                     sb.append(cliente.toString()).append("\n");
                 }
             }
@@ -190,6 +188,7 @@ public class ClienteDAO implements ClienteFactory{
 
         return sb.toString();
     }
+
     @Override
     public String mostrarClientePremiumDAO() throws SQLException {
         // Conexión a la base de datos
@@ -218,13 +217,13 @@ public class ClienteDAO implements ClienteFactory{
 
                 // Creación del objeto Cliente correspondiente
                 Cliente cliente;
-                if (tipoCliente.equals("Premium")) {
+                if (tipoCliente != null && tipoCliente.equals("Premium")) {
                     cliente = new ClientePremium(mail, nombre, nif, domicilio);
                 } else {
                     cliente = null;
                 }
 
-                // Impresión del cliente si es de tipo Standar
+                // Impresión del cliente si es de tipo Premium
                 if (cliente != null) {
                     sb.append(cliente.toString()).append("\n");
                 }

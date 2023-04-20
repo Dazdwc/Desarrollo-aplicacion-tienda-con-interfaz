@@ -62,32 +62,34 @@ public class ArticuloDAO implements ArticuloFactory {
     @Override
     public void crearArticuloDao(Articulo articulo) throws SQLException {
         // Conectamos a la bd y añadimos articulo mediante INSERT INTO
-        Connection connection = conexion.conectar();
-        String query = "INSERT INTO articulo (codigoArticulo, descripcion, pvp, gastosEnvio, preparacionMin) VALUES (?, ?, ?, ?, ?)";
-        PreparedStatement statement = connection.prepareStatement(query);
-        statement.setString(1, articulo.getCodigoArticulo());
-        statement.setString(2, articulo.getDescripcion());
-        statement.setFloat(3, articulo.getPvp());
-        statement.setDouble(4, articulo.getGastosEnvio());
-        statement.setInt(5, articulo.getPreparacionMin());
+        try (Connection connection = conexion.conectar()) {
+            String query = "INSERT INTO articulo (codigoArticulo, descripcion, pvp, gastosEnvio, preparacionMin) VALUES (?, ?, ?, ?, ?)";
+            PreparedStatement statement = connection.prepareStatement(query);
+            statement.setString(1, articulo.getCodigoArticulo());
+            statement.setString(2, articulo.getDescripcion());
+            statement.setFloat(3, articulo.getPvp());
+            statement.setDouble(4, articulo.getGastosEnvio());
+            statement.setInt(5, articulo.getPreparacionMin());
 
-        try {
-            // Iniciar transacción
-            connection.setAutoCommit(false);
+            try {
+                // Iniciar transacción
+                connection.setAutoCommit(false);
 
-            // Ejecutar la operación DML dentro de la transacción
-            statement.executeUpdate();
+                // Ejecutar la operación DML dentro de la transacción
+                statement.executeUpdate();
 
-            // Confirmar la transacción si todas las operaciones DML se completaron con éxito
-            connection.commit();
+                // Confirmar la transacción si todas las operaciones DML se completaron con éxito
+                connection.commit();
 
+            } catch (SQLException e) {
+                // En caso de error, se vuelve hacia atrás
+                connection.rollback();
+                throw new SQLException("Error al ejecutar la transacción: " + e.getMessage(), e);
+            }
         } catch (SQLException e) {
-            // En caso de error, se vuelve hacía atrás
-            connection.rollback();
-            throw e;
+            throw new SQLException("Error al conectar con la base de datos: " + e.getMessage(), e);
         } finally {
-            // Restablecer el modo de autocommit
-            connection.setAutoCommit(true);
+            // Cerrar la conexión a la base de datos
             conexion.cerrar();
         }
     }

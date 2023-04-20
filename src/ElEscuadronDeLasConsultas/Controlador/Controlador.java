@@ -1,9 +1,15 @@
 package ElEscuadronDeLasConsultas.Controlador;
 import ElEscuadronDeLasConsultas.DAO.ArticuloDAO;
 import ElEscuadronDeLasConsultas.DAO.ClienteDAO;
+import ElEscuadronDeLasConsultas.DAO.PedidoDAO;
 import ElEscuadronDeLasConsultas.Modelo.*;
-
+import ElEscuadronDeLasConsultas.Modelo.Conexion;
+import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.Scanner;
 
 public class Controlador {
@@ -251,7 +257,7 @@ public class Controlador {
     }*/
 
     // controlador Pedido
-    public void addPedido() {
+   /* public void addPedido() {
         System.out.println("Ingrese los datos del pedido");
         System.out.println("Codigo pedido:");
         int numeroPedido = teclado.nextInt();
@@ -305,9 +311,62 @@ public class Controlador {
                 datos.getListaPedido().add(pedido);
                 System.out.println(pedido);
         }
+    }*/
+
+    public void addPedido() {
+        PedidoDAO pedidoDAO = new PedidoDAO();
+
+        // Solicitar los datos del pedido al usuario
+        System.out.println("Introduce los datos del pedido:");
+        System.out.println("Número de pedido:");
+        int numeroPedido = Integer.parseInt(teclado.nextLine());
+        System.out.println("Cantidad:");
+        int cantidad = Integer.parseInt(teclado.nextLine());
+        System.out.println("Fecha (dd/MM/yyyy HH:mm:ss):");
+        String fechaHoraString = teclado.nextLine();
+        LocalDateTime fechaHora = LocalDateTime.parse(fechaHoraString, DateTimeFormatter.ofPattern("HH:mm:ss dd/MM/yyyy"));
+        System.out.println("Código del artículo:");
+        String codigoArticulo = teclado.nextLine();
+        System.out.println("Correo electrónico del cliente:");
+        String mailCliente = teclado.nextLine();
+
+        // Crear el objeto Articulo y el objeto Cliente correspondientes
+        Articulo articulo = new Articulo(codigoArticulo, null, 0, 0, 0);
+        Cliente cliente = null;
+
+        try {
+            // Obtener el tipo de cliente a partir del correo electrónico
+            cliente = pedidoDAO.recogerClienteDAO(mailCliente);
+
+            // Verificar que el cliente exista y sea de tipo Premium
+            if (cliente == null) {
+                System.out.println("El cliente no existe.");
+                return;
+            } else if (!(cliente instanceof ClientePremium)) {
+                System.out.println("El cliente no es de tipo Premium.");
+                return;
+            }
+        } catch (SQLException e) {
+            System.out.println("Ha ocurrido un error al buscar el cliente: " + e.getMessage());
+            return;
+        }
+
+        // Crear el objeto Pedido correspondiente
+        Pedido pedido = new Pedido(numeroPedido, cantidad, articulo, (ClientePremium) cliente, fechaHora);
+
+        // Insertar el pedido en la base de datos
+        try {
+            pedidoDAO.crearPedidoDAO(pedido);
+            System.out.println("Pedido creado correctamente.");
+        } catch (SQLException e) {
+            System.out.println("Ha ocurrido un error al crear el pedido: " + e.getMessage());
+        }
     }
 
-        public void eliminarPedido () {
+
+
+
+    public void eliminarPedido () {
             System.out.println("Ingrese el numero de pedido que desea eliminar:");
             int codigo = teclado.nextInt();
 
