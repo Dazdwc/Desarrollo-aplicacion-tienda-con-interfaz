@@ -2,6 +2,7 @@ package ElEscuadronDeLasConsultas.Vista;
 
 import ElEscuadronDeLasConsultas.Controlador.Controlador;
 
+import java.sql.SQLException;
 import java.util.Scanner;
 public class GestionOS {
     private Controlador controlador;
@@ -21,7 +22,7 @@ public class GestionOS {
         return resp.charAt(0);
     }
 
-    public void inicio() {
+    public void inicio() throws SQLException{
         boolean salir = false;
         char opcio;
         do {
@@ -71,7 +72,7 @@ public class GestionOS {
         } while (!salir);
     }
 
-    public void gestionarCliente() {
+    public void gestionarCliente() throws SQLException {
         boolean salir = false;
         char opcio;
         do {
@@ -86,13 +87,13 @@ public class GestionOS {
                     controlador.addCliente();
                     break;
                 case '2':
-                    controlador.mostarCliente();
+                    controlador.mostrarCliente();
                     break;
                 case '3':
-                    controlador.mostarClienteStandar();
+                    controlador.mostrarClienteStandar();
                     break;
                 case '4':
-                    controlador.mostarClientePremium();
+                    controlador.mostrarClientePremium();
                     break;
                 case '0':
                     salir = true;
