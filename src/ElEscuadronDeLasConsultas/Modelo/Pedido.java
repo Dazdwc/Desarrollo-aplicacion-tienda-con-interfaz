@@ -28,9 +28,6 @@ public class Pedido {
     }
 
 
-    public Pedido(int numeroPedido, int cantidad, Articulo articulo, Cliente cliente, LocalDateTime fechaConver) {
-    }
-
     public int getNumeroPedido() {
         return numeroPedido;
     }
