@@ -1,5 +1,4 @@
 package ElEscuadronDeLasConsultas.Modelo;
-
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
@@ -9,7 +8,7 @@ public class Pedido {
     private int numeroPedido;
     private int cantidad;
     private LocalDateTime fechaHora = LocalDateTime.now();
-    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss dd/MM/yyyy");
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
 
     private Articulo articulo;
     private Cliente cliente;
@@ -20,6 +19,14 @@ public class Pedido {
         this.articulo = articulo;
         this.cliente = cliente;
     }
+    public Pedido(int numeroPedido, int cantidad,LocalDateTime fecha,Articulo articulo, Cliente cliente) {
+        this.numeroPedido = numeroPedido;
+        this.cantidad = cantidad;
+        this.fechaHora = fecha;
+        this.articulo = articulo;
+        this.cliente = cliente;
+    }
+
 
     public int getNumeroPedido() {
         return numeroPedido;
@@ -41,6 +48,7 @@ public class Pedido {
 
         return this.fechaHora.format(formatter);
     }
+
     public void setFechaHora(LocalDateTime fechaHora) {
         this.fechaHora = fechaHora;
     }
@@ -88,8 +96,7 @@ public class Pedido {
 
         public double precioEnvio() {
                 double descuento = cliente.descuentoEnv();
-                double precioEnvioConDescuento = articulo.getGastosEnvio() * (1 - descuento);
-                return precioEnvioConDescuento;
+            return articulo.getGastosEnvio() * (1 - descuento);
         }
 
         public double PrecioTotal(){

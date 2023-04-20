@@ -1,20 +1,32 @@
 package ElEscuadronDeLasConsultas.Controlador;
 import ElEscuadronDeLasConsultas.Modelo.*;
 import java.util.Scanner;
+import java.sql.*;
 
 public class Controlador {
 
-    private Datos datos;
     Scanner teclado = new Scanner(System.in);
-    public Controlador() {
-        datos = new Datos();
-    }
 
     //Control de articulos
-    public void addArticulo() {
+    public void addArticulo(){
         System.out.println("Ingrese los datos del nuevo artículo:");
         System.out.println("Código: ");
-        int codigo = Integer.parseInt(teclado.nextLine());
+        String codigo = teclado.nextLine();
+        ArticuloDAO articuloDAO = new ArticuloDAOimp();
+
+        boolean existeArticulo;
+        try {
+            existeArticulo = articuloDAO.existeArticulo(codigo);
+        } catch (SQLException e) {
+            System.out.println("Error al verificar la existencia del artículo.");
+            return;
+        }
+
+        if (existeArticulo) {
+            System.out.println("Ya existe un artículo con ese código.");
+            return;
+        }
+
         System.out.println("Descripción: ");
         String descripcion = teclado.nextLine();
         System.out.println("Precio: ");
@@ -25,101 +37,110 @@ public class Controlador {
         int preparacion = Integer.parseInt(teclado.nextLine());
 
         Articulo articulo = new Articulo(codigo, descripcion, precio, gastosEnvio, preparacion);
-        datos.getListaArticulo().add(articulo);
+        try {
+            FactoryDAO factory = new FactoryMySQLDAO();
+            ArticuloDAO art = factory.crearArticuloDAO();
+            art.crearArticulo(articulo);
+        } catch (SQLException e) {
+            // Manejar el error de alguna manera apropiada
+            e.printStackTrace();
+        }
         System.out.println("Artículo creado exitosamente.");
-        System.out.println("\nEl Articulo creado contiene los siguientes datos:");
-        System.out.println(articulo);
     }
 
 
     public void mostrarArticulo() {
-        ListaArticulo<Articulo> listaArticulos = datos.getListaArticulo();
-        if (listaArticulos.isEmpty()) {
-            System.out.println("No hay artículos registrados.");
-        } else {
-            System.out.println("Lista de artículos:");
-            for (Articulo articulo : listaArticulos.getArrayList()) {
-                System.out.println("El articulo es el siguiente:\n " + articulo.toString());
-            }
+        ArticuloDAO art = new ArticuloDAOimp();
+        try {
+            art.mostrarArticulo();
+        } catch (SQLException e) {
+            System.out.println("Error al mostrar los clientes: " + e.getMessage());
         }
     }
 
 
     //Control de clientes:
     public void addCliente() {
-        System.out.println("Ingrese los datos del nuevo cliente:");
-        System.out.println("Mail: ");
-        String mail = teclado.nextLine();
-        ListaCliente<Cliente> listaCliente = datos.getListaCliente();
-        Cliente clienteExistente = listaCliente.obtenerClientePorMail(mail);
 
-        if (clienteExistente == null) {
+        System.out.println("Ingrese los datos del nuevo cliente: \nMail:");
+        String mail = teclado.nextLine();
+    //Función modificada para que recorra la base de datos comprobando si existe o no.
+       ClienteDAO dao = new ClienteDAOimp();
+        try {
+            if (dao.existeCliente(mail)) {
+                System.out.println("Este Mail ya existe.");
+                return;
+            }
+
+    //se siguen pidiendo los parametros necesarios
+
             System.out.println("Nombre: ");
             String nombre = teclado.nextLine();
             System.out.println("NIF: ");
             String nif = teclado.nextLine();
             System.out.println("Domicilio: ");
             String domicilio = teclado.nextLine();
-
             System.out.println("¿Es un cliente Premium? (S/N)");
             String respuesta = teclado.nextLine().toUpperCase();
             Cliente cliente;
+
+    // Si la respuesta es 's' se crea un cliente premium y sino se creará uno estandar.
+
             if (respuesta.equals("S")) {
                 cliente = new ClientePremium(mail, nombre, nif, domicilio);
             } else {
                 cliente = new ClienteStandar(mail, nombre, nif, domicilio);
             }
-            datos.getListaCliente().add(cliente);
-            System.out.println("El Cliente creado contiene los siguientes datos:");
-            System.out.println(cliente);
-        } else {
-            System.out.println("Este Mail ya existe.");
+
+    //Funcion donde incluye el cliente en la base de datos.
+
+            try {
+
+    //Se LLama al la funcion que permite crear el cliente en el DAO
+                FactoryDAO factory = new FactoryMySQLDAO();
+                ClienteDAO cli = factory.crearClienteDAO();
+                cli.crearCliente(cliente);
+
+            } catch (SQLException e) {
+
+    //Gestion de error de crear el cliente
+                e.printStackTrace();
+            }
+
+        } catch (SQLException e) {
+    //Gestión de error de el anterior try (verificar mail)
+            e.printStackTrace();
         }
+
     }
 
     public void mostarCliente() {
-        ListaCliente<Cliente> listaCliente = datos.getListaCliente();
-        if (listaCliente.isEmpty()) {
-            System.out.println("No hay clientes que mostrar.");
-        } else {
-            System.out.println("Lista de Clientes: \n");
-            for (Cliente cliente : listaCliente.getArrayList()) {
-                if (cliente.tipoCliente() == "Standar") {
-
-                    System.out.println(cliente);
-                } else {
-                    System.out.println(cliente);
-                }
-            }
+        ClienteDAO clienteDAO = new ClienteDAOimp();
+        try {
+            clienteDAO.mostrarClientes();
+        } catch (SQLException e) {
+            System.out.println("Error al mostrar los clientes: " + e.getMessage());
         }
     }
 
 
     public void mostarClienteStandar() {
-        ListaCliente<Cliente> listaCliente = datos.getListaCliente();
-        if (listaCliente.isEmpty()) {
-            System.out.println("No hay clientes que mostrar.");
-        } else {
-            System.out.println("Lista de Clientes: \n");
-            for (Cliente cliente : listaCliente.getArrayList()) {
-                if(cliente.tipoCliente() == "Standar"){
 
-                    System.out.println(cliente);}
-            }
+        ClienteDAO clienteDAO = new ClienteDAOimp();
+        try {
+            clienteDAO.mostrarStandar();
+        } catch (SQLException e) {
+            System.out.println("Error al mostrar los clientes: " + e.getMessage());
         }
     }
     public void mostarClientePremium() {
-        ListaCliente<Cliente> listaCliente = datos.getListaCliente();
-        if (listaCliente.isEmpty()) {
-            System.out.println("No hay clientes que mostrar.");
-        } else {
-            System.out.println("Lista de Clientes: \n");
-            for (Cliente cliente : listaCliente.getArrayList()) {
-                if(cliente.tipoCliente() == "Premium"){
-
-                    System.out.println(cliente);}
-            }
+        ClienteDAO clienteDAO = new ClienteDAOimp();
+        try {
+            clienteDAO.mostrarPremium();
+        } catch (SQLException e) {
+            System.out.println("Error al mostrar los clientes: " + e.getMessage());
         }
+
     }
 
     // controlador Pedido
@@ -127,95 +148,126 @@ public class Controlador {
         System.out.println("Ingrese los datos del pedido");
         System.out.println("Codigo pedido:");
         int numeroPedido = teclado.nextInt();
+        boolean existePedido;
+        try {
+            PedidoDAO pedidoDAO = new PedidoDAOimp();
+            existePedido = pedidoDAO.existePedido(numeroPedido);
+        } catch (SQLException e) {
+            System.out.println("Error al buscar el pedido en la base de datos: " + e.getMessage());
+            return;
+        }if (existePedido) {
+                System.out.println("Este Pedido ya existe");
+                return;
+            }
         System.out.println("Cantidad:");
         int cantidad = teclado.nextInt();
         System.out.println("Codigo del articulo");
-        int codigo = teclado.nextInt();
         teclado.nextLine();
+        String codigo = teclado.nextLine();
 
-        ListaArticulo<Articulo> listaArticulos = datos.getListaArticulo();
-        Articulo articulo = listaArticulos.obtenerCodigoArticulo(codigo);
+            ArticuloDAO articuloDAO = new ArticuloDAOimp();
 
-        if (articulo == null) {
-            System.out.println("El articulo no existe.");
+            Articulo articulo;
+            try {
+                articulo = articuloDAO.recogerArticulo(codigo);
+            } catch (SQLException e) {
+                System.out.println("Error al recoger el artículo: " + e.getMessage());
+                return;
+            }
+            if (articulo == null) {
+                System.out.println("El articulo que quiere seleccionar no existe.");
         } else {
-            System.out.println("Mail del cliente:");
-            String mail = teclado.nextLine();
+                System.out.println("Mail del cliente:");
+                String mail = teclado.nextLine();
 
-            ListaCliente<Cliente> listaCliente = datos.getListaCliente();
-            Cliente cliente = listaCliente.obtenerClientePorMail(mail);
-
-            if (cliente == null) {
-
-                System.out.println("Cliente no encontrado, añada sus datos\n");
-                System.out.println("Nombre: ");
-                String nombre = teclado.nextLine();
-                System.out.println("NIF: ");
-                String nif = teclado.nextLine();
-                System.out.println("Domicilio: ");
-                String domicilio = teclado.nextLine();
-
-                System.out.println("¿Es un cliente Premium? (S/N)");
-                String respuesta = teclado.nextLine().toUpperCase();
-                Cliente clientes;
-                if (respuesta.equals("S")) {
-                    clientes = new ClientePremium(mail, nombre, nif, domicilio);
-                } else {
-                    clientes = new ClienteStandar(mail, nombre, nif, domicilio);
+                ClienteDAO clienteDAO = new ClienteDAOimp();
+                Cliente cliente;
+                try {
+                    cliente = clienteDAO.recogerCliente(mail);
+                } catch (SQLException e) {
+                    System.out.println("Error al recoger el cliente: " + e.getMessage());
+                    return;
                 }
-                datos.getListaCliente().add(clientes);
-                listaCliente = datos.getListaCliente();
-                cliente = clientes;
-                datos.setListaCliente(listaCliente);}
+                if (cliente == null) {
+                    System.out.println("El cliente no existe, creelo:");
+                        addCliente();
+                    try {
+                        cliente = clienteDAO.recogerCliente(mail);
+                    } catch (SQLException e) {
+                        System.out.println("Error al recoger el cliente: " + e.getMessage());
+                        return;
+                    }
+                }
+                if (cliente == null) {
+                    System.out.println("No se pudo crear el cliente.");
+                    return;
+                }
                 Pedido pedido = new Pedido(numeroPedido, cantidad, articulo, cliente);
-                datos.getListaPedido().add(pedido);
-                System.out.println(pedido);
-        }
+                FactoryDAO factory = new FactoryMySQLDAO();
+                PedidoDAO ped = factory.crearPedidoDAO();
+
+                try {
+                    ped.crearPedido(pedido);
+                } catch (SQLException e) {
+                    // Manejar el error de alguna manera apropiada
+                    e.printStackTrace();
+                }
+            }
     }
 
         public void eliminarPedido () {
             System.out.println("Ingrese el numero de pedido que desea eliminar:");
             int codigo = teclado.nextInt();
 
-            ListaPedido<Pedido> listaPedido = datos.getListaPedido();
-            Pedido pedido = listaPedido.obtenerPorNumPedido(codigo);
-            if (pedido == null) {
-                System.out.println("Pedido no encontrado.");
-            } else {
-                if (pedido.pedidoEnviado() == false) {
-                    listaPedido.borrar(pedido);
-                    System.out.println("Pedido eliminado con éxito.");
-                }else{
-                    System.out.println("No se puede eliminar el articulo, ya ha sido enviado.");
+            PedidoDAO pedidoDAO = new PedidoDAOimp();
+                try {
+                    pedidoDAO.eliminarPedido(codigo);
+                } catch (SQLException e) {
+                    System.out.println("Error al mostrar los pedidos: " + e.getMessage());
                 }
+            }
 
+    public void mostrarPedidoPendiente() {
+        System.out.println("¿Quiere filtrar por cliente? (S/N) \nSi no lo filtra se mostrarán todos.\n");
+        String respuesta = teclado.nextLine().toUpperCase();
+        PedidoDAO pedidoDAO = new PedidoDAOimp();
+
+        if(respuesta.equalsIgnoreCase("S")) {
+            System.out.println("Ingrese el correo electrónico del cliente:");
+            String correoElectronico = teclado.nextLine();
+            try {
+                pedidoDAO.mostrarPedidoPendienteFiltrado(correoElectronico);
+            } catch (SQLException e) {
+                System.out.println("Error al mostrar los pedidos: " + e.getMessage());
+            }
+        }else{
+            try {
+                pedidoDAO.mostrarPedidoPendiente();
+            } catch (SQLException e) {
+                System.out.println("Error al mostrar los pedidos: " + e.getMessage());
             }
         }
+    }
 
-        public void mostrarPedidosPendientes () {
-            ListaPedido<Pedido> listapedido = datos.getListaPedido();
-            if (listapedido.getSize() == 0) {
-                System.out.println("No hay pedidos que mostrar.");
-            } else {
-                System.out.println("Envios Pendientes:");
-                for (Pedido pedido : listapedido.getArrayList()) {
-                    if (pedido.pedidoEnviado() == false) {
-                        System.out.println(pedido);
-                    }
+        public void mostrarPedidoEnviado() {
+            System.out.println("¿Quiere filtrar por cliente? (S/N) \nSi no lo filtra se mostrarán todos.\n");
+            String respuesta = teclado.nextLine().toUpperCase();
+            PedidoDAO pedidoDAO = new PedidoDAOimp();
+
+            if(respuesta.equalsIgnoreCase("S")) {
+                System.out.println("Ingrese el correo electrónico del cliente:");
+                String correoElectronico = teclado.nextLine();
+                try {
+                    pedidoDAO.mostrarPedidoEnviadoFiltrado(correoElectronico);
+                } catch (SQLException e) {
+                    System.out.println("Error al mostrar los pedidos: " + e.getMessage());
+                }
+            }else{
+                try {
+                    pedidoDAO.mostrarPedidoEnviado();
+                } catch (SQLException e) {
+                    System.out.println("Error al mostrar los pedidos: " + e.getMessage());
                 }
             }
         }
-        public void mostrarPedidosEnviados () {
-                ListaPedido<Pedido> listapedido = datos.getListaPedido();
-                if (listapedido.getSize() == 0) {
-                    System.out.println("No hay pedidos que mostrar.");
-                } else {
-                    System.out.println("Envios Pendientes:");
-                    for (Pedido pedido : listapedido.getArrayList()) {
-                        if (pedido.pedidoEnviado() == true) {
-                            System.out.println(pedido);
-                        }
-                    }
-                }
-            }
 }
