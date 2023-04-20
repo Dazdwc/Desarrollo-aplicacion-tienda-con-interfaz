@@ -16,7 +16,7 @@ public class PedidoTest {
     void testPruebaToString() {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss dd/MM/yyyy");
         ClientePremium cliente = new ClientePremium("Pimpamtoma@lacasitos.com", "Jonielserio", "12345678A", "unicornio 123");
-        Articulo articulo = new Articulo(1, "descripcion", 10, 10, 3);
+        Articulo articulo = new Articulo("1", "descripcion", 10, 10, 3);
         Pedido pedido = new Pedido(1, 3,articulo, cliente);
         String expected = "\n Numero Pedido:       1" +
                 "\n Realizado el:        " + LocalDateTime.now().format(formatter) +

@@ -13,18 +13,18 @@ public class ArticuloTest {
 
     @BeforeEach
     public void setUp() {
-        articulo = new Articulo(1, "Artículo de prueba", 10.5f, 2.0, 30);
+        articulo = new Articulo("1", "Artículo de prueba", 10.5f, 2.0, 30);
     }
 
     @Test
     public void testGetCodigoArticulo() {
-        assertEquals(1, articulo.getCodigoArticulo());
+        assertEquals("1", articulo.getCodigoArticulo());
     }
 
     @Test
     public void testSetCodigoArticulo() {
-        articulo.setCodigoArticulo(2);
-        assertEquals(2, articulo.getCodigoArticulo());
+        articulo.setCodigoArticulo("2");
+        assertEquals("2", articulo.getCodigoArticulo());
     }
 
     @Test
