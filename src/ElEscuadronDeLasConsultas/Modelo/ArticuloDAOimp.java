@@ -9,7 +9,6 @@ public class ArticuloDAOimp implements ArticuloDAO  {
 
     @Override
     public void crearArticulo(Articulo articulo) throws SQLException{
-
         Connection connection = conexion.conectar();
         String query = "INSERT INTO articulo (codigoArticulo,descripcion,pvp,gastosEnvio,preparacionMin) VALUES (?,?,?,?,?)";
         PreparedStatement statement = connection.prepareStatement(query);
@@ -91,12 +90,11 @@ public class ArticuloDAOimp implements ArticuloDAO  {
 
     @Override
     public boolean existeArticulo(String codigo) throws SQLException {
-        Connection connection = null;
+        Connection connection = conexion.conectar();
         PreparedStatement statement;
         ResultSet resultSet;
 
         try {
-            connection = conexion.conectar();
             String query = "SELECT COUNT(*) FROM articulo WHERE codigoArticulo = ?";
             statement = connection.prepareStatement(query);
             statement.setString(1, codigo);
@@ -118,7 +116,6 @@ public class ArticuloDAOimp implements ArticuloDAO  {
 
         } catch (SQLException e) {
             // Deshacer la transacción si hubo algún error
-            assert connection != null;
             connection.rollback();
             throw e;
 
