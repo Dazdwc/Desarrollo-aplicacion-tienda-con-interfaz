@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.proyecto_cuatro.Vista.OnlineStoreController">
+    <children>
+        <Text fill="#b91c1c" layoutX="294.0" layoutY="275.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Online Store" textAlignment="CENTER" wrappingWidth="225.0">
+            <font>
+                <Font name="System Bold" size="35.0" />
+            </font>
+        </Text>
+        <Button fx:id="closeButton" layoutX="382.0" layoutY="580.0" mnemonicParsing="false" onAction="#closeWindow" text="Cerrar" />
+        <Button fx:id="botonArticulo" layoutX="206.0" layoutY="391.0" onAction="#mostrarVistaArticulo" text="Ver Articulos" />
+        <Button fx:id="CrearArticulo" layoutX="200.0" layoutY="441.0" onAction="#mostrarCrearArticulo" text="Nuevo Articulo" />
+        <Button fx:id="VerCliente" layoutX="367.0" layoutY="391.0" onAction="#mostrarVistaCliente" text="Ver Clientes" />
+        <Button fx:id="CrearCliente" layoutX="361.0" layoutY="441.0" onAction="#mostrarCrearCliente" text="Nuevo Cliente" />
+        <Button fx:id="VerPedido" layoutX="516.0" layoutY="391.0" onAction="#mostrarVistaPedido" text="Ver Pedidos" />
+        <Button fx:id="CrearPedido" layoutX="510.0" layoutY="441.0" onAction="#mostrarCrearPedido" text="Nuevo Pedido" />
+      <Text layoutX="206.0" layoutY="221.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Bienvenido a" wrappingWidth="148.0">
+         <font>
+            <Font name="System Bold" size="24.0" />
+         </font>
+      </Text>
+      <Label layoutX="188.0" layoutY="353.0" text="Gestión de Articulos" textFill="#23a5d0">
+         <font>
+            <Font name="System Bold Italic" size="14.0" />
+         </font></Label>
+      <Label layoutX="344.0" layoutY="353.0" text="Gestión de Clientes" textFill="#40e427">
+         <font>
+            <Font name="System Bold Italic" size="14.0" />
+         </font></Label>
+      <Label layoutX="500.0" layoutY="353.0" text="Gestión Pedidos" textFill="#c9ab15">
+         <font>
+            <Font name="System Bold Italic" size="15.0" />
+         </font></Label>
+    </children>
+</AnchorPane>

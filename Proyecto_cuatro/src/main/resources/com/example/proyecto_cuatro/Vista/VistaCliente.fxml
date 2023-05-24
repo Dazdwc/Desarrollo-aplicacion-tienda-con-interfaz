@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane fx:id="labelContainer" prefHeight="800.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.proyecto_cuatro.Vista.VistaCliente">
+    <padding>
+        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+    </padding>
+    <TableView fx:id="tabla" layoutX="20.0" layoutY="20.0" minHeight="320.0" minWidth="484.0" prefHeight="637.0" prefWidth="739.0">
+        <columns>
+            <TableColumn id="mail" fx:id="mail" prefWidth="165.0" text="Mail" />
+            <TableColumn id="nombre" fx:id="nombre" minWidth="0.0" prefWidth="123.0" text="Nombre" />
+            <TableColumn id="nif" fx:id="nif" minWidth="0.0" prefWidth="146.0" text="NIF" />
+            <TableColumn id="domicilio" fx:id="domicilio" prefWidth="172.0" text="Domicilio" />
+            <TableColumn id="tipoCliente" fx:id="tipoCliente" prefWidth="132.0" text="Tipo Cliente" />
+        </columns>
+    </TableView>
+    <Button fx:id="botton1" layoutX="40.0" layoutY="688.0" onAction="#mostrarClienteClick" text="Ver Todos" textAlignment="CENTER" />
+    <Button fx:id="btnPremium" layoutX="160.0" layoutY="688.0" mnemonicParsing="false" onAction="#mostrarClientesPremium" text="Mostrar Premium" />
+    <Button fx:id="btnStandar" layoutX="330.0" layoutY="688.0" mnemonicParsing="false" onAction="#mostrarClientesStandar" text="Mostrar Standar" />
+    <Button fx:id="Volver" layoutX="690.0" layoutY="688.0" mnemonicParsing="false" onAction="#volver" text="Volver" />
+    <Button fx:id="closeButton" layoutX="613.0" layoutY="688.0" mnemonicParsing="false" onAction="#closeButton" text="Cerrar" />
+</AnchorPane>

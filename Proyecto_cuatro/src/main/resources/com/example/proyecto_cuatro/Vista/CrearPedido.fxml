@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane prefHeight="800.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.proyecto_cuatro.Vista.CrearPedido">
+    <Label layoutX="258.0" layoutY="243.0" text="Número de Pedido" />
+    <Label layoutX="258.0" layoutY="243.0" text="Número de Pedido" />
+    <TextField fx:id="numeroPedido" layoutX="394.0" layoutY="239.0" />
+
+    <Label layoutX="258.0" layoutY="283.0" text="Cantidad" />
+    <TextField fx:id="cantidad" layoutX="394.0" layoutY="279.0" />
+
+    <Label layoutX="258.0" layoutY="323.0" text="Código del Artículo" />
+    <TextField fx:id="codigoArticulo" layoutX="394.0" layoutY="319.0" />
+
+    <Label layoutX="258.0" layoutY="363.0" text="Mail del Cliente" />
+    <TextField fx:id="mailCliente" layoutX="394.0" layoutY="359.0" />
+
+    <Button fx:id="crearClienteButton" layoutX="320.0" layoutY="536.0" onAction="#crearCliente" prefHeight="25.0" prefWidth="103.0" text="Crear Cliente" />
+    <Button fx:id="guardarButton" layoutX="294.0" layoutY="419.0" onAction="#guardarPedido" text="Guardar" />
+    <Button fx:id="Volver" layoutX="452.0" layoutY="536.0" mnemonicParsing="false" onAction="#volver" text="Volver" />
+    <Button fx:id="closeButton" layoutX="394.0" layoutY="419.0" onAction="#closeButton" text="Cerrar" />
+</AnchorPane>

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+
+<AnchorPane id="Crear Articulo" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.proyecto_cuatro.Vista.CrearArticulo">
+    <VBox layoutX="381.0" layoutY="250.0" spacing="10">
+   
+        <TextField fx:id="codigoArticulo" promptText="Código del artículo" />
+        <TextField fx:id="descripcion" promptText="Descripción" />
+        <TextField fx:id="pvp" promptText="PVP" />
+        <TextField fx:id="gastosEnvio" promptText="Gastos de envío" />
+        <TextField fx:id="preparacionMin" promptText="Tiempo de preparación" />
+    </VBox>
+   <Label layoutX="259.0" layoutY="259.0" text="Código Articulo" />
+   <Label layoutX="289.0" layoutY="289.0" text="Descripción" />
+   <Label layoutX="320.0" layoutY="323.0" text="PVP" />
+   <Label layoutX="267.0" layoutY="360.0" text="Gastos de envio" />
+   <Label layoutX="227.0" layoutY="392.0" text="Tiempo de preparación" />
+     <Button fx:id="Volver" layoutX="381.0" layoutY="705.0" mnemonicParsing="false" onAction="#volver" text="Volver" />
+     <Button fx:id="closeButton" layoutX="469.0" layoutY="705.0" mnemonicParsing="false" onAction="#closeButton" text="Cerrar" />
+     <Button fx:id="guardarButton" layoutX="352.0" layoutY="459.0" onAction="#guardarArticulo" text="Guardar" />
+</AnchorPane>
