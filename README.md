@@ -1,5 +1,5 @@
-# ElEscuadronDeLasConsultas_Producto2
-Esta es la resolución del Procto 2 de mano del grupo "El Escuadrón de las consultas"
+#Desarrollo de aplicación con interfaz gráfica **(Java FX)**, mapeado ORM **(Hibernate)** con un modelo **Factory, DAO y MVC**,
+La persistencia se ha realizado con **My_SQL**. 
 
-Hemos realizado la subida del código final debido a problemas de entendimiento con la plataforma,
-ahora ya sabemos como podemos hacer pull/push request y commits.
+Esta actividad ha sido desarollada con la intención de hacer una aplicación con una interfaz sencilla y disponga de persistencia de datos.
+se con esta aplicación se podrían gestionar pedidos.
